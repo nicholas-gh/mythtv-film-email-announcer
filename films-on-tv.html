@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://genshi.edgewall.org/">
+  <head>
+    <title>Films Coming Up</title>
+    <style type="text/css">
+      body {font-family: Verdana, sans-serif;}
+      img {float: right;}
+      div.score {border: 1px solid black; width: 10%; float: left; margin: 1em; text-align: center; background: white;}
+      div.score span.number {font-size: 150%; display: block;}
+      ul.links, li.links {
+      display: inline;
+      margin: 0;
+      padding: 0;
+      color: #339;
+      font-size: 80%;
+      }
+      span.time {font-weight: bold}
+      span.year {font-size: 50%}
+      div.toc {float: right; border: 1px solid grey; margin: 0.5em; padding: 0.5em; background: grey;}
+      div.toc span.number {font-size: 60%}
+      .good {font-weight: bold;}
+      h2.filmtitle {background: lightgrey;}
+    </style>
+  </head>
+  <body>
+    <h1>Films Coming Up</h1>
+    <div class="toc">
+      <h2>Quick list</h2>
+      <ul>
+	<li py:for="show in shows">
+	  <a href="#${str(show.chanid) + '-' + show.firstshowing.strftime('%s')}"
+	     class="${{True: 'good', False: None}[(show.has_key('imdb') and show.imdb['rating'] > 7)]}">
+	    <span py:content="show.title">Sample film title</span>
+	    <span class="number" py:if="show.has_key('imdb')" py:content="show.imdb['rating']">7.3</span>
+	  </a>
+	</li>
+      </ul>
+    </div>
+    <div py:for="show in shows">
+      <a name="${str(show.chanid) + '-' + show.firstshowing.strftime('%s')}"/>
+      <h2 class="filmtitle">
+	<span py:content="show.title">Sample film title </span>
+	<span class="year" py:content="show.airdate">2003</span>
+      </h2>
+      <ul class="links">
+	<li>
+	  <a href="$show.mythweb_url">View in MythWeb</a>
+	</li>
+	<li py:if="show.has_key('imdb_url')">
+	  <a href="$show.imdb_url">View in IMDB</a>
+	</li>
+      </ul>
+      <img src="${show.imdb['cover url']}" py:if="show.has_key('imdb') and show.imdb.has_key('cover url')"/>
+      <div class="score">
+	<div>
+	  <span class="number" py:content="show.stars">0.8</span>
+	  TV Rating
+	</div>
+	<div py:if="show.has_key('imdb')">
+	  <span class="number" py:content="show.imdb['rating']">7.2</span>
+	  IMDB Rating
+	</div>
+      </div>
+      <p>First showing is at 
+	<span class="time" py:content="show.firstshowing">2009-06-27 22:35:00</span>.
+      </p>
+      <p class="description" py:content="show.description">
+	Expert direction by Tony Scott and a winning central
+	performance by Will Smith give this cracking hi-tech thriller
+	extra edge and appeal. When an incriminating tape revealing
+	the murder of congressman Jason Robards accidentally ends up
+	in Smith's possession, he finds himself relentlessly pursued
+	by corrupt Jon Voight and his posse of electronic trackers,
+	who use spy satellites, transmitters and all manner of
+	undercover gizmos to trace him. The Fugitive meets The
+	Conversation in this dynamically exciting action adventure
+	that's both intriguing and scarily thought-provoking.
+      </p>
+    </div>
+  </body>
+</html>
