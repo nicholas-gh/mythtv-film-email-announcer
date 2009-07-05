@@ -28,7 +28,6 @@ url = http://www.imdb.com
 password  = 
 host      = mythone
 db        = mythconverg
-host      = mythone
 user      = mythtv
 max_films = 200
 
